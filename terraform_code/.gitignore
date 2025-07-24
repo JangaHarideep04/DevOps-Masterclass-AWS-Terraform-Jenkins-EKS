@@ -39,3 +39,11 @@ build/
 
 # Project documentation (private)
 Project_WriteUp.docx
+
+.terraform/
+*.tfstate
+*.tfstate.backup
+.crash
+*.log
+*.bak
+*.tmp
