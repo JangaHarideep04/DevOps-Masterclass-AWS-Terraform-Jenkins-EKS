@@ -12,7 +12,9 @@ We use **ArgoCD** for GitOps-based deployments and **Prometheus + Grafana** for 
 
 ## 🏗️ Enhanced Architecture Diagram
 
-![DevOps EKS Pipeline Architecture](https://raw.githubusercontent.com/HarideepDevOps/architecture/main/devops-eks-pipeline-architecture.png)
+![DevOps EKS Pipeline Architecture]
+
+<img width="1536" height="1024" alt="ChatGPT Image Jul 24, 2025, 06_06_46 PM" src="https://github.com/user-attachments/assets/40b0b535-5d38-4d5f-bd69-52ee3404fe99" />
 
 > This diagram displays all components including Terraform, Jenkins, Docker, ECR, EKS, ArgoCD, Prometheus, and Grafana in a real-world production setup.
 
@@ -78,6 +80,8 @@ We use **ArgoCD** for GitOps-based deployments and **Prometheus + Grafana** for 
   - Grafana dashboard (default user: `admin`, password from Kubernetes secret)
 
 ---
+![argocd](https://github.com/user-attachments/assets/457f7a2c-b962-4077-a93f-fd9d0d1de618)
+---
 
 ### 🟥 Stage 5: GitOps Deployment using ArgoCD
 
@@ -90,6 +94,12 @@ We use **ArgoCD** for GitOps-based deployments and **Prometheus + Grafana** for 
 ---
 
 ## 📊 Observability Dashboards
+
+---
+
+![grafana](https://github.com/user-attachments/assets/538c410d-fd74-492f-b886-d9692f822528)
+
+---
 
 ### 📈 Grafana
 - Dashboards include:
@@ -115,6 +125,10 @@ We use **ArgoCD** for GitOps-based deployments and **Prometheus + Grafana** for 
 
 ---
 
+![prime-lb](https://github.com/user-attachments/assets/3616e63f-a73a-414e-8897-bfc52199d46b)
+
+---
+
 ## ✅ Final Deliverables
 
 - 🔧 Full Infrastructure-as-Code setup via Terraform
@@ -130,7 +144,7 @@ We use **ArgoCD** for GitOps-based deployments and **Prometheus + Grafana** for 
 
 **Harideep Janga**  
 DevOps Practitioner | AWS | Kubernetes | Terraform | CI/CD Enthusiast  
-📧 [Reach me via GitHub](https://github.com/HarideepDevOps)
+
 
 ---
 
