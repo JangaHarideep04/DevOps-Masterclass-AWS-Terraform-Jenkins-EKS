@@ -1,0 +1,18 @@
+squ_59cb53c682011b9d006128d3a409e0c284d6a4fb #sonarqube-token
+
+#pipline-plugins needed
+
+sonarqube-scanner
+nodejs
+pipeline stage-view
+eclipse-temu
+docker (all plugins)
+prometheus matrix
+
+
+#Tools Needed in Jenkins
+
+Java-JDk- 17.0.8
+Sonar-Scanner---->latest
+NodeJs---->16.20.0
+Docker---->latest

@@ -1,31 +1,24 @@
-# DEFINE DEFAULT VARIABLES HERE
-
-variable "instance_type" {
-  description = "Instance Type"
-  type        = string
+variable "ami" {
+  description = "Ubuntu AMI ID"
+  default     = "ami-0c7217cdde317cfec"
 }
 
-variable "ami" {
-  description = "AMI ID"
-  type        = string
+variable "instance_type" {
+  default = "t2.medium"
 }
 
 variable "key_name" {
-  description = "Key Pair"
-  type        = string
+  default = "your-key-name"
 }
 
 variable "volume_size" {
-  description = "Volume size"
-  type        = string
-}
-
-variable "region_name" {
-  description = "AWS Region"
-  type        = string
+  default = 30
 }
 
 variable "server_name" {
-  description = "EC2 Server Name"
-  type        = string
+  default = "Jenkins-Server"
+}
+
+variable "region_name" {
+  default = "us-east-1"
 }
