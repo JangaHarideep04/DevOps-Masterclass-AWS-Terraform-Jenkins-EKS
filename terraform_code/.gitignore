@@ -47,3 +47,30 @@ Project_WriteUp.docx
 *.log
 *.bak
 *.tmp
+
+# Node.js dependencies
+node_modules/
+package-lock.json
+
+# Local env
+.env
+.DS_Store
+
+# Logs
+*.log
+
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+
+# IDE
+.vscode/
+.idea/
+
+# Build
+build/
+dist/
+
+# LFS-managed binary/image files (already handled)
