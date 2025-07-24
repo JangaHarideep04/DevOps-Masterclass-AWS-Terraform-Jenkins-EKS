@@ -1,0 +1,41 @@
+# Terraform state files
+*.tfstate
+*.tfstate.backup
+
+# Terraform crash log files
+crash.log
+
+# Terraform variable files (if they contain sensitive data)
+terraform.tfvars
+
+# SSH Keys or PEMs
+*.pem
+
+# Ignore provider plugins and binaries
+.terraform/
+
+# Node modules (if used)
+node_modules/
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Editor folders
+.vscode/
+.idea/
+*.swp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Windows specific files
+desktop.ini
+
+# Build artifacts or compiled files
+dist/
+build/
+
+# Project documentation (private)
+Project_WriteUp.docx
