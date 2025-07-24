@@ -3,57 +3,17 @@
 ---
 
 ## 🚀 Overview
-This project demonstrates an end-to-end DevOps pipeline for a sample Amazon Prime clone web application. It covers Infrastructure provisioning with **Terraform**, CI/CD with **Jenkins**, containerization with **Docker**, container registry via **ECR**, orchestration using **Amazon EKS (Kubernetes)**, and observability with **Prometheus + Grafana**. Application deployment is managed using **ArgoCD** for GitOps-style delivery.
+This project demonstrates a complete DevOps lifecycle implementation for a sample Amazon Prime clone web application. It begins with Infrastructure provisioning via **Terraform**, followed by building CI/CD pipelines using **Jenkins**, incorporating **SonarQube** for static code analysis, **Trivy** for security scanning, **Docker** for containerization, **ECR** for image hosting, and **Amazon EKS** (Kubernetes) for orchestration. Deployment is handled through **ArgoCD**, and observability is achieved using **Prometheus** and **Grafana**.
+
+This project also makes use of **Elastic IPs**, **IAM roles and policies**, and **LoadBalancers** for external access.
 
 ---
 
-## 🏗️ Architecture Diagram
+## 🏗️ Enhanced Architecture Diagram
 
-```
-                         ┌──────────────────────────────┐
-                         │          Developers           │
-                         └─────────────┬────────────────┘
-                                       │
-                             GitHub Repository (App Code)
-                                       │
-                      ┌────────────────▼────────────────┐
-                      │          Jenkins (CI/CD)         │
-                      └────────────────┬────────────────┘
-                                       │
-                ┌─────────────────────▼─────────────────────┐
-                │        SonarQube (Code Quality Check)      │
-                └─────────────────────┬─────────────────────┘
-                                       │
-                            ┌─────────▼────────┐
-                            │  Trivy (Scanner) │
-                            └─────────┬────────┘
-                                      │
-                             ┌────────▼─────────┐
-                             │ Docker Build &    │
-                             │ Push to ECR       │
-                             └────────┬──────────┘
-                                      │
-                         ┌────────────▼────────────┐
-                         │       Amazon ECR        │
-                         └────────────┬────────────┘
-                                      │
-                      ┌───────────────▼────────────────┐
-                      │        Amazon EKS (K8s)         │
-                      └───────────────┬────────────────┘
-                                      │
-                         ┌────────────▼────────────┐
-                         │         ArgoCD          │
-                         └────────────┬────────────┘
-                                      │
-                         ┌────────────▼────────────┐
-                         │   Web Application PODs   │
-                         └────────────┬────────────┘
-                                      │
-                         ┌────────────▼────────────┐
-                         │ Prometheus + Grafana     │
-                         │   (Monitoring & Metrics) │
-                         └──────────────────────────┘
-```
+![DevOps EKS Pipeline Architecture](https://raw.githubusercontent.com/HarideepDevOps/architecture/main/devops-eks-pipeline-architecture.png)
+
+> _(This image includes Jenkins, SonarQube, Trivy, Docker, ECR, EKS, ArgoCD, Prometheus, and Grafana with colored components and clear technology flow)_
 
 ---
 
@@ -70,91 +30,78 @@ This project demonstrates an end-to-end DevOps pipeline for a sample Amazon Prim
 | **Orchestration**     | Amazon EKS (Kubernetes)              |
 | **Deployment**        | ArgoCD                               |
 | **Monitoring**        | Prometheus, Grafana                  |
+| **IAM**               | Roles for Jenkins, ArgoCD, EKS, etc. |
+| **Elastic IP**        | Static IP for Jenkins EC2            |
 
 ---
 
-## 📌 Project Workflow (Stage by Stage)
+## 📌 Project Workflow (Detailed Stage-wise Breakdown)
 
 ### **Stage 1: Infrastructure Setup with Terraform**
-- Provisioned an EC2 instance using Terraform.
-- Opened necessary security groups (ports for Jenkins, SonarQube, ArgoCD, etc.).
-- Installed essential DevOps tools (Jenkins, Node.js, SonarQube, Docker, AWS CLI, etc.).
+- **EC2 Creation**: Provisioned EC2 with Elastic IP for Jenkins, SonarQube, and other tools.
+- **Security Groups**: Opened custom ports (8080, 9000, 3000, etc.).
+- **Installed Dependencies**: Jenkins, Node.js, Docker, AWS CLI, SonarQube, Trivy, etc.
+- **IAM Attachments**: IAM roles with policies for EC2 and EKS interaction.
 
-### **Stage 2: CI Pipeline using Jenkins**
-1. Cloned the source code from GitHub.
-2. Analyzed code quality using **SonarQube**.
-3. Installed dependencies and built the app using **npm**.
-4. Performed image vulnerability scanning using **Trivy**.
-5. Built Docker image and pushed it to **Amazon ECR**.
+### **Stage 2: CI/CD Pipeline in Jenkins**
+1. Clone source code from GitHub.
+2. Perform **SonarQube** static code analysis.
+3. Run `npm install` and `npm run build`.
+4. Scan Docker image using **Trivy**.
+5. Build Docker image and push to **Amazon ECR**.
 
-### **Stage 3: Kubernetes Cluster Provisioning**
-- Created an **Amazon EKS** cluster using Terraform.
-- Configured `kubectl` to connect with the EKS cluster.
+### **Stage 3: EKS Setup and Configuration**
+- Provisioned **Amazon EKS cluster** using Terraform.
+- Configured `kubectl` using `aws eks update-kubeconfig`.
+- Deployed test pod to validate connection.
 
-### **Stage 4: Monitoring Setup**
-- Installed **Prometheus & Grafana** via Helm charts in the `prometheus` namespace.
-- Exposed Prometheus and Grafana using LoadBalancers.
-- Verified real-time metrics and CPU/memory monitoring.
+### **Stage 4: Monitoring Setup (Prometheus + Grafana)**
+- Installed using **Helm charts** in `monitoring` namespace.
+- Exposed via LoadBalancer services.
+- Dashboards configured in Grafana for CPU, memory, and pod metrics.
 
-### **Stage 5: ArgoCD Setup and Deployment**
-- Installed **ArgoCD** in the `argocd` namespace.
-- Exposed the ArgoCD server via LoadBalancer.
-- Connected our EKS cluster to ArgoCD.
-- Created Kubernetes manifests (`Deployment`, `Service`) for the app using ECR image.
-- Synced the GitHub repo with ArgoCD and successfully deployed.
+### **Stage 5: GitOps Deployment with ArgoCD**
+- Installed ArgoCD in the `argocd` namespace.
+- ArgoCD server exposed via LoadBalancer.
+- Connected EKS cluster to ArgoCD and GitHub repo.
+- Deployed application using K8s manifests and synced.
 
-### **Final Output:**
-- Application successfully deployed and accessible via LoadBalancer.
-- Real-time monitoring available through **Grafana dashboards**.
-- GitOps deployment and re-deployment managed through **ArgoCD UI**.
-
----
-
-## 📝 Folder Structure (Jenkins Host)
-```bash
-.
-├── Dockerfile
-├── Jenkinsfile
-├── sonar-project.properties
-├── terraform/
-│   ├── ec2.tf
-│   ├── eks-cluster.tf
-│   ├── outputs.tf
-│   └── variables.tf
-└── k8s/
-    ├── deployment.yaml
-    └── service.yaml
-```
+### ✅ Final Output:
+- Frontend available via EKS LoadBalancer.
+- ArgoCD UI accessible to control GitOps deployments.
+- Live monitoring via Grafana Dashboards.
 
 ---
 
 ## 📊 Observability Dashboards
 - **Grafana Dashboards:**
-  - Cluster health
-  - Node CPU/Memory
-  - Pod-level metrics
+  - Cluster CPU/Memory
+  - Node health & status
+  - Pod resource consumption
 - **Prometheus Metrics:**
-  - Scraped from K8s nodes, kube-state-metrics
-  - AlertManager can be optionally integrated
+  - Scraped from `kube-state-metrics`, `node-exporter`
+  - Pre-configured alerts and graphs
 
 ---
 
 ## 🔐 Security Considerations
-- AWS credentials stored using Jenkins credentials plugin
-- Trivy used for image vulnerability scanning
-- SonarQube for code-level issues
+- **IAM Roles & Policies**: Attached to EC2 and EKS nodes.
+- **Static Elastic IP**: Ensures consistent access to Jenkins and ArgoCD.
+- **SonarQube**: For code-level bugs, vulnerabilities, and smells.
+- **Trivy**: For container vulnerability scanning before pushing to registry.
 
 ---
 
-## ✅ Outcome
-✅ Successfully built and deployed a microservice-based web application on Kubernetes using modern DevOps practices.  
-✅ Fully automated from code to deployment using CI/CD pipelines and GitOps.  
-✅ Application metrics visible in real-time for performance monitoring.
+## ✅ Project Outcome
+- 🚀 Full CI/CD & GitOps pipeline up and running.
+- 🐳 Dockerized application deployed to Amazon EKS.
+- 📈 Real-time monitoring integrated.
+- 🔁 Git-based deployment automation through ArgoCD.
 
 ---
 
 ## 👨‍💻 Author
 **Harideep Janga**  
-DevOps Enthusiast | First DevOps Project using Terraform, Jenkins & Kubernetes
+DevOps Enthusiast | Terraform | Jenkins | Kubernetes | AWS
 
-Feel free to ⭐ this repository and connect with me for suggestions!
+Feel free to ⭐ this project or reach out for collaboration or feedback!
