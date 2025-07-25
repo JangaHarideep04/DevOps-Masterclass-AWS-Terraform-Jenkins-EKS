@@ -44,9 +44,12 @@ Project_WriteUp.docx
 *.tfstate
 *.tfstate.backup
 .crash
-*.log
+*.loggit 
 *.bak
 *.tmp
+terraform.tfstate
+terraform.tfstate.backup
+
 
 # Node.js dependencies
 node_modules/
